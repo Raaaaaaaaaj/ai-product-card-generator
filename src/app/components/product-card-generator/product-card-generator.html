@@ -1,0 +1,70 @@
+<div class="page">
+  <div class="container">
+
+    <!-- FORM CARD -->
+    <form class="form">
+      <h2>AI Product Card Generator</h2>
+      <p class="subtitle">
+        Enter product details and generate AI-powered content
+      </p>
+
+      <div class="form-group">
+        <label>Product Name</label>
+        <input
+          type="text"
+          name="productName"
+          [(ngModel)]="productName"
+          placeholder="e.g. Wireless Headphones"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <input
+          type="text"
+          name="category"
+          [(ngModel)]="category"
+          placeholder="e.g. Electronics"
+        />
+      </div>
+
+      <button type="button" class="generate-btn" (click)="generateProduct()">
+        Generate Details
+      </button>
+
+      @if (error) {
+        <p class="error">{{ error }}</p>
+      }
+    </form>
+
+    <!-- RESULT CARD (LOADER + PRODUCT CARD SAME PLACE) -->
+    <div class="result-card">
+
+      @if (isLoading) {
+        <div class="loader">
+          <div class="loaderLine w60"></div>
+          <div class="loaderLine w90"></div>
+          <div class="loaderLine w80"></div>
+          <div class="loaderLine w45"></div>
+        </div>
+      }
+
+      @if (productData && !isLoading) {
+        <div class="product-card">
+          <h3 class="product-title">{{ productData.title }}</h3>
+
+          <p class="product-description">
+            {{ productData.description }}
+          </p>
+
+          <div class="tags">
+            @for (tag of productData.keywords; track tag) {
+              <span class="tag">{{ tag }}</span>
+            }
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
