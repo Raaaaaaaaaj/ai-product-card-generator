@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule],
   templateUrl: './product-card-generator.html',
   styleUrl: './product-card-generator.css',
+  standalone: true
 })
 export class ProductCardGenerator {
   productName = '';
@@ -36,7 +37,6 @@ export class ProductCardGenerator {
           try {
             const rawText =
               res.candidates[0].content.parts[0].text;
-            console.log('AI Response:', rawText);
             if (!rawText) {
               throw new Error("Empty AI response")
             }
@@ -44,6 +44,8 @@ export class ProductCardGenerator {
               .replace(/```json/g, '')
               .replace(/```/g, '')
               .trim();
+              // Debugging line
+              console.log('Cleaned Text:', cleanedText);
             this.productData = JSON.parse(cleanedText);
             console.log('Parsed Product Data:', this.productData);
           } catch (e) {
