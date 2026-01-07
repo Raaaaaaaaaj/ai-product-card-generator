@@ -1,59 +1,77 @@
-# AiProductCardGenerator
+## AI Product Card Generator
+A simple Angular-based web application that generates product card content (title, description, and keywords) using AI based on user-provided product details.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
 
-## Development server
+## Problem Statement
+The goal of this assignment is to demonstrate:
+- Clean UI design
+- Proper frontend architecture
+- Basic AI integration using an external API
+- Clear explanation of design and technical decisions
 
-To start a local development server, run:
+The application allows a user to enter a product name and category, and generates a visually styled product card using AI.
 
-```bash
-ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tech Stack
+- Framework: Angular
+- Styling: CSS (Custom, no external UI library)
+- Forms: Angular template-driven forms
+- AI API: Google Gemini (Generative Language API)
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Application Flow
+- User enters Product Name and Category
+- Clicks Generate Details
+- A loading skeleton is displayed
+- Product details are fetched from the AI API
+- The AI response is parsed and rendered as a product card
 
-```bash
-ng generate component component-name
-```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## UI & Design Choices
+- Two-panel layout
+    - Left: Input form
+    - Right: AI-generated product card
+- Skeleton loader used to indicate background processing
+- Clean, minimal design to keep focus on content
+- No external UI libraries used to keep the solution lightweight
 
-```bash
-ng generate --help
-```
 
-## Building
+## AI Integration Details
+- The application uses Google Gemini’s text generation API
+- A carefully structured prompt is sent to the AI, requesting:
+    - Product title
+    - Short description
+    - Keywords
+- The AI is instructed to return the result in strict JSON format for easy parsing
+- The response is sanitized to handle markdown formatting before rendering
 
-To build the project run:
 
-```bash
-ng build
-```
+## Folder Structure
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+src/app/
+│── components/
+│   └── product-card-generator/
+│
+│── services/
+│   └── ai.service.ts
+│
+│── models/
+│   └── product.model.ts
 
-## Running unit tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## How to Run the Project
+1. Install dependencies
+    - npm install
+2. Make environment.ts files in the environments folder
+3. Add Gemini API key
+    - export const environment = {
+        production: false,
+        geminiApiKey: 'API_KEY_GOES_HERE'
+    }
+4. Run the application 
+    - ng serve
 
-```bash
-ng test
-```
 
-## Running end-to-end tests
+## Conclusion
+This project focuses on clarity, clean architecture, and practical AI usage rather than over-engineering. It demonstrates how AI can be effectively integrated into a frontend application to enhance user experience.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
