@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { Aiservice } from '../../services/aiservice';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-product-card-generator',
   imports: [FormsModule, CommonModule],
@@ -13,16 +14,16 @@ import { CommonModule } from '@angular/common';
 export class ProductCardGenerator {
   productName = '';
   category = '';
-
   isLoading = false;
   productData: Product | null = null;
   error = '';
 
-  constructor(private aiService: Aiservice) { }
+  // was unable to detect changes so used change detector ref
+  constructor(private aiService: Aiservice, private cdr: ChangeDetectorRef) { }
 
   generateProduct() {
     if (!this.productName || !this.category) {
-      this.error = 'Please enter product name and category';
+      this.error = '*Please enter product name and category';
       return;
     }
 
@@ -35,28 +36,30 @@ export class ProductCardGenerator {
       .subscribe({
         next: (res) => {
           try {
-            const rawText =
-              res.candidates[0].content.parts[0].text;
-            if (!rawText) {
-              throw new Error("Empty AI response")
-            }
+            const rawText = res.candidates[0].content.parts[0].text;
+            if (!rawText) throw new Error("Empty AI response");
+
             const cleanedText = rawText
               .replace(/```json/g, '')
               .replace(/```/g, '')
               .trim();
-              // Debugging line
-              console.log('Cleaned Text:', cleanedText);
+
             this.productData = JSON.parse(cleanedText);
-            console.log('Parsed Product Data:', this.productData);
           } catch (e) {
-            this.error = 'Failed to parse AI response';
+            console.error('Parsing error:', e);
+            this.error = '*Failed to parse AI response';
           } finally {
             this.isLoading = false;
+            // force change detection
+            this.cdr.detectChanges();
           }
         },
-        error: () => {
-          this.error = 'Something went wrong. Please try again.';
+        error: (err) => {
+          console.error('API error:', err);
+          this.error = '*Something went wrong. Please try again.';
           this.isLoading = false;
+          // force change detection
+          this.cdr.detectChanges();
         }
       });
   }

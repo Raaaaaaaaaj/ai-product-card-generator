@@ -8,7 +8,7 @@ export class Aiservice {
   private apiUrl =
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   generateProductDetails(productName: string, category: string) {
 
